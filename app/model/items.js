@@ -11,20 +11,15 @@ const Schema = mongoose.Schema;
  * @type {mongoose}
  */
 
- const AreasSchema = new Schema({
+ const ItemsSchema = new Schema({
    id: {
      unique: true,
      type: Number,
    },
-   name: String,
-   parentId: {
-     type: Number,
-     default: 0,
-   },
-   level: {
-     type: Number,
-     default: 1,
-   },
+   title: String,
+   price: Number,
+   stocks: Number,
+   img: String,
    meta: {
     createAt: {
       type: Date,
@@ -38,7 +33,7 @@ const Schema = mongoose.Schema;
  });
 
  // Defines a pre hook for the document.
- AreasSchema.pre('save', function(next) {
+ ItemsSchema.pre('save', function(next) {
    if (this.isNew) {
      this.meta.createAt = this.meta.updateAt = Date.now()
    }
@@ -48,14 +43,14 @@ const Schema = mongoose.Schema;
    next()
  })
 /**
- * 定义模型areas
+ * 定义模型items
  * 模型用来实现我们定义的模式，调用mongoose.model来编译Schema得到Model
  * @type {[type]}
  */
-// 参数Areas 数据库中的集合名称, 不存在会创建.
-var Areas = mongoose.model('Areas', AreasSchema);
+// 参数Items 数据库中的集合名称, 不存在会创建.
+var Items = mongoose.model('Items', ItemsSchema);
 
-module.exports = Areas;
+module.exports = Items;
 
 /**
  * nodejs中文社区这篇帖子对mongoose的用法总结的不错：https://cnodejs.org/topic/548e54d157fd3ae46b233502

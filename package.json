@@ -18,6 +18,8 @@
     "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.0",
     "koa-logger": "^3.2.0",
-    "mongoose": "^5.0.12"
+    "koa2-cors": "^2.0.5",
+    "mongoose": "^5.0.12",
+    "nodemon": "^1.17.3"
   }
 }

@@ -1,4 +1,6 @@
 const areasHelper = require('../helper/areasHelper');
+const mongoose = require('mongoose');
+const Areas = mongoose.model('Areas');
 
 /**
  * 数据库接口测试
@@ -8,7 +10,7 @@ const areasHelper = require('../helper/areasHelper');
  */
 exports.areas = async (ctx, next) => {
   var data = await areasHelper.findAllAreas();
-
+  console.log('areas data', data);
   ctx.body = {
     success: true,
     data
@@ -19,14 +21,14 @@ exports.addArea = async (ctx, next) => {
   const areas = await areasHelper.findAllAreas();
   const nextId = areas.length ? Math.max(...areas.map(area => area.id)) : 0;
   const { name = '', parentId = 0, level = 1 } = ctx.request.body;
-  const area = {
+  const area = new Areas({
     id: nextId + 1,
     name,
     parentId,
     level,
-  };
+  });
 
-  const newArea =  await areasHelper.addArea(area);
+  const newArea = await areasHelper.addArea(area);
 
   if(newArea) {
     ctx.body = {
@@ -36,7 +38,7 @@ exports.addArea = async (ctx, next) => {
   }
 };
 
-exports.deleteUser = async (ctx, next) => {
+exports.deleteArea = async (ctx, next) => {
   const { id } = ctx.request.body;
   console.log(phoneNumber)
   var data  = await areasHelper.deleteArea({ id })

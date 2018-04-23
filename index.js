@@ -11,7 +11,7 @@ mongoose.connect(db);
  * 获取数据库表对应的js对象所在的路径
  * @type {[type]}
  */
-const models_path = path.join(__dirname, '/app/models')
+const models_path = path.join(__dirname, '/app/model')
 
 
 /**
@@ -40,15 +40,30 @@ walk(models_path);
 
 //中间件
 const Koa = require('koa');
+const cors = require('koa2-cors');
 const logger = require('koa-logger');
 const bodyParser = require('koa-bodyparser');
 const app = new Koa();
+
+//跨域配置
+app
+  .use(cors({
+     origin: function(ctx) {
+       if (ctx.url === '/test') {
+         return false;
+       }
+       return 'http://hqiswonder.com.cn:8081';
+     },
+     credentials: true,
+     allowMethods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  }));
+
 app
   .use(logger())
   .use(bodyParser())
 
 //提供router路由信息
-const router = require('./config/router.js');
+const router = require('./config/router.js')();
 app
   .use(router.routes())
   .use(router.allowedMethods())
